@@ -278,9 +278,60 @@ module.exports = function footnote_plugin(md) {
     return true;
   }
 
+  function create_footnote_list_element(state, refTokens, footnote, i) {
+    console.log('state', state);
+    console.log('refTokens', refTokens);
+    var token      = new state.Token('footnote_open', '', 1);
+    token.meta = { id: i, label: footnote.label };
+    state.tokens.push(token);
+
+    let tokens;
+    if (footnote.tokens) {
+      tokens = [];
+
+      token          = new state.Token('paragraph_open', 'p', 1);
+      token.block    = true;
+      tokens.push(token);
+
+      token          = new state.Token('inline', '', 0);
+      token.children = footnote.tokens;
+      token.content  = footnote.content;
+      tokens.push(token);
+
+      token          = new state.Token('paragraph_close', 'p', -1);
+      token.block    = true;
+      tokens.push(token);
+
+    } else if (footnote.label) {
+      tokens = refTokens[':' + footnote.label];
+    }
+
+    if (tokens) state.tokens = state.tokens.concat(tokens);
+    let lastParagraph;
+    if (state.tokens[state.tokens.length - 1].type === 'paragraph_close') {
+      lastParagraph = state.tokens.pop();
+    } else {
+      lastParagraph = null;
+    }
+
+    const t = footnote.count > 0 ? footnote.count : 1;
+    for (let j = 0; j < t; j++) {
+      token      = new state.Token('footnote_anchor', '', 0);
+      token.meta = { id: i, subId: j, label: footnote.label };
+      state.tokens.push(token);
+    }
+
+    if (lastParagraph) {
+      state.tokens.push(lastParagraph);
+    }
+
+    token = new state.Token('footnote_close', '', -1);
+    state.tokens.push(token);
+  }
+
   // Glue footnote tokens to end of token stream
   function footnote_tail(state) {
-    var i, l, j, t, lastParagraph, list, token, tokens, current, currentLabel,
+    var list, current, currentLabel,
         insideRef = false,
         refTokens = {};
 
@@ -306,58 +357,9 @@ module.exports = function footnote_plugin(md) {
     if (!state.env.footnotes.list) { return; }
     list = state.env.footnotes.list;
 
-    token = new state.Token('footnote_block_open', '', 1);
-    state.tokens.push(token);
-
-    for (i = 0, l = list.length; i < l; i++) {
-      token      = new state.Token('footnote_open', '', 1);
-      token.meta = { id: i, label: list[i].label };
-      state.tokens.push(token);
-
-      if (list[i].tokens) {
-        tokens = [];
-
-        token          = new state.Token('paragraph_open', 'p', 1);
-        token.block    = true;
-        tokens.push(token);
-
-        token          = new state.Token('inline', '', 0);
-        token.children = list[i].tokens;
-        token.content  = list[i].content;
-        tokens.push(token);
-
-        token          = new state.Token('paragraph_close', 'p', -1);
-        token.block    = true;
-        tokens.push(token);
-
-      } else if (list[i].label) {
-        tokens = refTokens[':' + list[i].label];
-      }
-
-      if (tokens) state.tokens = state.tokens.concat(tokens);
-      if (state.tokens[state.tokens.length - 1].type === 'paragraph_close') {
-        lastParagraph = state.tokens.pop();
-      } else {
-        lastParagraph = null;
-      }
-
-      t = list[i].count > 0 ? list[i].count : 1;
-      for (j = 0; j < t; j++) {
-        token      = new state.Token('footnote_anchor', '', 0);
-        token.meta = { id: i, subId: j, label: list[i].label };
-        state.tokens.push(token);
-      }
-
-      if (lastParagraph) {
-        state.tokens.push(lastParagraph);
-      }
-
-      token = new state.Token('footnote_close', '', -1);
-      state.tokens.push(token);
-    }
-
-    token = new state.Token('footnote_block_close', '', -1);
-    state.tokens.push(token);
+    state.tokens.push(new state.Token('footnote_block_open', '', 1));
+    list.forEach(create_footnote_list_element.bind(null, state, refTokens));
+    state.tokens.push(new state.Token('footnote_block_close', '', -1));
   }
 
   md.block.ruler.before('reference', 'footnote_def', footnote_def, { alt: [ 'paragraph', 'reference' ] });
