@@ -55,11 +55,13 @@ function render_footnote_open(tokens, idx, options, env, slf) {
     id += ':' + tokens[idx].meta.subId;
   }
 
-  return '<li id="fn' + id + '" class="footnote-item">';
+  return `<aside id="fn${id}" class="sidenote" role="note" style="--offset:1;span:3;">
+    <output aria-hidden="true" class="highlight" id="fn${id}-content">
+    <label role="presentation" for="for-a-long-time-Anchor">`;
 }
 
 function render_footnote_close() {
-  return '</li>\n';
+  return '</label></output></aside>\n';
 }
 
 function render_footnote_anchor(tokens, idx, options, env, slf) {
