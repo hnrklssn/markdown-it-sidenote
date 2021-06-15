@@ -29,11 +29,11 @@ browserify:
 	# Browserify
 	( printf "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" ; \
 		./node_modules/.bin/browserify ./ -s markdownitFootnote \
-		) > dist/markdown-it-footnote.js
+		) > dist/markdown-it-sidenote.js
 	# Minify
-	./node_modules/.bin/terser dist/markdown-it-footnote.js -b beautify=false,ascii_only=true -c -m \
+	./node_modules/.bin/terser dist/markdown-it-sidenote.js -b beautify=false,ascii_only=true -c -m \
 		--preamble "/*! ${NPM_PACKAGE} ${NPM_VERSION} ${GITHUB_PROJ} @license MIT */" \
-		> dist/markdown-it-footnote.min.js
+		> dist/markdown-it-sidenote.min.js
 
 .PHONY: lint test coverage
 .SILENT: lint test

@@ -3,10 +3,10 @@ They could have arbitrary markup:
 .
 foo^[ *bar* ]
 .
-<p>foo<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>foo<sup class="sidenote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <aside id="fn1" class="sidenote" role="note">
     <output aria-hidden="true" class="highlight" id="fn1-content">
-    <label role="presentation" for="fnref1"><p> <em>bar</em>  <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+    <label role="presentation" for="fnref1"><p> <em>bar</em>  <a href="#fnref1" class="sidenote-backref">↩︎</a></p>
 </label></output></aside>
 .
 
@@ -15,10 +15,10 @@ test inline in middle of paragraph:
 .
 foo^[ bar ]baz
 .
-<p>foo<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>baz</p>
+<p>foo<sup class="sidenote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>baz</p>
 <aside id="fn1" class="sidenote" role="note">
     <output aria-hidden="true" class="highlight" id="fn1-content">
-    <label role="presentation" for="fnref1"><p> bar  <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+    <label role="presentation" for="fnref1"><p> bar  <a href="#fnref1" class="sidenote-backref">↩︎</a></p>
 </label></output></aside>
 .
 
@@ -29,10 +29,10 @@ foo^[ bar ]baz
 
 this is the second paragraph
 .
-<p>foo<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>baz</p>
+<p>foo<sup class="sidenote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>baz</p>
 <aside id="fn1" class="sidenote" role="note">
     <output aria-hidden="true" class="highlight" id="fn1-content">
-    <label role="presentation" for="fnref1"><p> bar  <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+    <label role="presentation" for="fnref1"><p> bar  <a href="#fnref1" class="sidenote-backref">↩︎</a></p>
 </label></output></aside>
 <p>this is the second paragraph</p>
 .

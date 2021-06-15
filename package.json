@@ -1,14 +1,14 @@
 {
-  "name": "markdown-it-footnote",
+  "name": "markdown-it-sidenote",
   "version": "3.0.3",
-  "description": "Footnotes for markdown-it markdown parser.",
+  "description": "Sidenotes for markdown-it markdown parser.",
   "keywords": [
     "markdown-it-plugin",
     "markdown-it",
     "markdown",
-    "footnotes"
+    "sidenotes"
   ],
-  "repository": "markdown-it/markdown-it-footnote",
+  "repository": "hnrklssn/markdown-it-sidenote",
   "license": "MIT",
   "scripts": {
     "test": "make test"
