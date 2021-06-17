@@ -35,7 +35,9 @@ function render_sidenote_ref(tokens, idx, options, env, slf) {
     refid += ':' + tokens[idx].meta.subId;
   }
 
-  return '<sup class="sidenote-ref"><a href="#fn' + id + '" id="fnref' + refid + '">' + caption + '</a></sup>';
+  return `<label aria-describedby="fn${id}" role="presentation" class="sidelink" for="fn${id}-content">
+<a aria-hidden="true" href="#fn${id}"><output class="highlight fnref" id="fnref${refid}">${caption}
+</output></a></label>`;
 }
 
 function render_sidenote_open(tokens, idx, options, env, slf) {
